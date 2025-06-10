@@ -1,74 +1,119 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-struct Produto {
-    char nome[50];
+typedef struct {
+    char nome[30];
     int quantidade;
     float preco;
-};
+} Produto;
 
-struct Produto produto;
+Produto produto;
 
-void cadastrarProduto() {
-    printf("\nInforme o nome do produto: ");
-    scanf("%s", produto.nome);
+void cadastroProduto();
+void listarProduto();
+void comprarProduto();
+void finalizaFuncao();
 
-    printf("Informe a quantidade do produto em estoque: ");
-    scanf("%d", &produto.quantidade);
+int main(){
+    int opcao;
+    
+    do{
+        printf("---- SuperMais ----\n");
+        printf("1- Cadastrar produto\n");
+        printf("2- Listar o produto\n");
+        printf("3- Comprar\n");
+        printf("0- Sair\n");
+        scanf("%d", &opcao);
+        
+        switch (opcao){
+            case 1:
+            cadastroProduto();
+            break;
+            
+            case 2:
+            listarProduto();
+            break;
+            
+            case 3:
+            comprarProduto();
+            break;
+            
+            case 0:
+            system ("clear");
+            printf("Obrigado! :)\n");
+            break;
+            
+            default:
+            system ("clear");
+            printf("Opção inválida!\n");
+            break;
+        }
+        
+    } while (opcao != 0);
+    
+    return 0;
+}
 
-    printf("Informe o preço do produto: ");
+void finalizaFuncao() {
+    printf("Enter para continuar...");
+    getchar();   
+    getchar();
+    system("clear");
+}
+
+void cadastroProduto() {
+    system ("clear");
+    printf("---- Cadastro do Produto ----\n");
+    printf("Nome: ");
+    scanf(" %[^\n]", produto.nome);
+    
+    printf("Preço: ");
     scanf("%f", &produto.preco);
+    
+    printf("Quantidade: ");
+    scanf("%d", &produto.quantidade);
+    
+    finalizaFuncao();
 }
 
 void listarProduto() {
-    printf("\nNome: %s\n", produto.nome);
-    printf("Quantidade em estoque: %d\n", produto.quantidade);
-    printf("Preço: R$ %.2f\n", produto.preco);
+    system ("clear");
+    printf("---- Informações do Produto ----\n");
+    printf("Nome: %s\n", produto.nome);
+    printf("Preço: %.2f\n", produto.preco);
+    printf("Quantidade: %d\n", produto.quantidade);
+    finalizaFuncao();
 }
 
-void fazerCompra() {
-    int quantComprada;
-    printf("\nInforme a quantidade do produto: ");
-    scanf("%d", &quantComprada);
-
-    if (quantComprada > produto.quantidade) {
-        printf("\nQuantidade insuficiente no estoque!\n");
-    } else {
-        produto.quantidade <= quantComprada;
-        printf("\nCompra realizada!\n");
-        printf("\nQuantidade no estoque: %d\n", produto.quantidade);
-    }
-}
-
-int main() {
-    int opcao;
-    produto.quantidade = 0; 
-
-    do {
-        printf("\n---- Mercado SuperMais ----\n");
-        printf("1. Cadastrar produto\n");
-        printf("2. listar produto\n");
-        printf("3. Fazer compra\n");
-        printf("4. Sair\n");
-        scanf("%d", &opcao);
-
-        switch (opcao) {
-            case 1:
-                cadastrarProduto();
-                break;
-            case 2:
-                listarProduto();
-                break;
-            case 3:
-                fazerCompra();
-                break;
-            case 4:
-                printf("\nSaindo...\n");
-                break;
-            default:
-                printf("\nOpção inválida!\n");
+void comprarProduto() {
+    int quantCompra;
+    float valorCompra;
+    system ("clear");
+    
+        printf("---- Comprar Produto ----\n");
+        printf("Disponivel:\n");
+        printf("%s\n", produto.nome);
+        printf("Preço do produto: %.2f\n", produto.preco);
+        printf("Quantidade disponivel: %d\n", produto.quantidade);
+        printf("Quantidade que deseja comprar de %s:\n", produto.nome);
+        scanf("%d", &quantCompra);
+        
+        valorCompra = quantCompra * produto.preco;
+        
+        if (quantCompra <= produto.quantidade) {
+            system("clear");
+            printf("Compra aprovada!\n");
+            printf("O valor da sua compra é de: %.2f\n", valorCompra);
+            
+            produto.quantidade -= quantCompra;
+            
+            printf("Quantidade restante: %d\n", produto.quantidade);
+        } 
+        else {
+            system("clear");
+            printf("Compra não autorizada! Quantidade indisponivel.\n");
+            printf("Faça sua compra novamente.\n");
         }
-    } while (opcao != 4);
-
-    return 0;
+    
+    finalizaFuncao();
 }
